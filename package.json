@@ -1,0 +1,9 @@
+{
+    "name": "cakephp-ainexus-e2e",
+    "private": true,
+    "type": "module",
+    "description": "E2E runner anchor for pest-plugin-browser. The plugin root is Pest's rootPath, so `playwright run-server` spawns here — this package exists only to provide node_modules/.bin/playwright. The Vue toolchain lives in resources/frontend.",
+    "devDependencies": {
+        "playwright": "^1.62.0"
+    }
+}

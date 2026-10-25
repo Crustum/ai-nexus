@@ -1,0 +1,41 @@
+<?php
+declare(strict_types=1);
+
+namespace TestApp\Ai\Agents;
+
+use Crustum\Ai\Attributes\Model;
+use Crustum\Ai\Attributes\Provider;
+use Crustum\Ai\Contracts\Agent;
+use Crustum\Ai\Contracts\Conversational;
+use Crustum\Ai\Trait\PromptableTrait;
+use Stringable;
+
+/**
+ * Conversational agent fixture with no tools, for attachment coverage.
+ */
+#[Provider('openai')]
+#[Model('gpt-5.6-luna')]
+class VisionAgent implements Agent, Conversational
+{
+    use PromptableTrait;
+
+    /**
+     * Describe the agent behavior.
+     *
+     * @return \Stringable|string
+     */
+    public function instructions(): Stringable|string
+    {
+        return 'You describe images and documents the user attaches.';
+    }
+
+    /**
+     * List the conversation history seed messages.
+     *
+     * @return \Crustum\Ai\Messages\Message[]
+     */
+    public function messages(): iterable
+    {
+        return [];
+    }
+}

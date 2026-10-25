@@ -1,0 +1,21 @@
+{
+  "js/app.js": {
+    "file": "app.js",
+    "name": "app",
+    "src": "js/app.js",
+    "isEntry": true,
+    "css": [
+      "app.css"
+    ]
+  },
+  "sass/styles-dark.scss": {
+    "file": "styles-dark.css",
+    "src": "sass/styles-dark.scss",
+    "isEntry": true
+  },
+  "sass/styles.scss": {
+    "file": "styles.css",
+    "src": "sass/styles.scss",
+    "isEntry": true
+  }
+}

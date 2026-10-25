@@ -1,0 +1,135 @@
+<?php
+declare(strict_types=1);
+
+/*
+| Targeting uses data-testid (`@name`); content is still asserted as real text,
+| scoped to the element it belongs to.
+*/
+
+use Cake\Core\Configure;
+
+beforeEach(function (): void {
+    useTestAppAgents();
+});
+
+function expectNameToTruncate(object $page, string $selector, string $name): void
+{
+    $encodedSelector = json_encode($selector);
+
+    $page->assertPresent($selector);
+
+    expect($page->script("document.querySelector({$encodedSelector})?.getAttribute('title')"))->toBe($name);
+
+    expect($page->script(<<<JS
+        (() => {
+            const element = document.querySelector({$encodedSelector});
+
+            if (!element) return false;
+
+            const style = getComputedStyle(element);
+
+            return element.scrollWidth > element.clientWidth
+                && style.overflowX === 'hidden'
+                && style.textOverflow === 'ellipsis'
+                && style.whiteSpace === 'nowrap';
+        })()
+    JS))->toBeTrue();
+}
+
+it('renders a card for each discovered agent', function (): void {
+    visit('/ai_nexus')
+        ->assertSee('SupportAgent')
+        ->assertSee('WeatherAgent')
+        ->assertSee('gpt-5.6-luna')
+        ->assertNoJavaScriptErrors();
+});
+
+it('shows the agent count in the header and sidebar footer', function (): void {
+    visit('/ai_nexus')
+        ->assertSee('Agents')
+        ->assertPresent('@sidebar-agents');
+});
+
+it('shows tool chips and collapses overflow into a +N chip', function (): void {
+    visit('/ai_nexus')
+        ->assertSee('SearchProductsTool')
+        ->assertPresent('@tool-overflow');
+});
+
+it('explains why an agent cannot be instantiated and how to fix it', function (): void {
+    visit('/ai_nexus')
+        ->assertPresent('@agent-card-unavailable')
+        ->assertSeeIn(
+            '[data-testid="agent-card-unavailable-name"][title="BrokenAgent"]',
+            'BrokenAgent',
+        )
+        ->assertSee('an interface with no binding')
+        ->assertSee('$this->app->bind(');
+});
+
+it('opens the playground when a card is clicked', function (): void {
+    visit('/ai_nexus')
+        ->click('WeatherAgent')
+        ->assertPathContains('/playground/')
+        ->assertNoJavaScriptErrors();
+});
+
+it('lists agents in the sidebar', function (): void {
+    visit('/ai_nexus')->assertSeeIn('@sidebar-agents', 'KITCHENSINKAGENT');
+});
+
+it('truncates long agent names in discovery cards and the sidebar at desktop width', function (): void {
+    $page = visit('/ai_nexus')->resize(1440, 1100);
+
+    expectNameToTruncate(
+        $page,
+        '[data-testid="agent-card-name"][title="ExpenditureDetailsRelatedNotesAnalyzer"]',
+        'ExpenditureDetailsRelatedNotesAnalyzer',
+    );
+
+    expectNameToTruncate(
+        $page,
+        '[data-testid="agent-card-unavailable-name"][title="IncomeProtectionRecommendationDataCollectorBrokenAgent"]',
+        'IncomeProtectionRecommendationDataCollectorBrokenAgent',
+    );
+
+    expectNameToTruncate(
+        $page,
+        '[data-testid="sidebar-agent-name"][title="ExpenditureDetailsRelatedNotesAnalyzer"]',
+        'ExpenditureDetailsRelatedNotesAnalyzer',
+    );
+
+    $page->assertNoJavaScriptErrors();
+});
+
+it('keeps long agent names clipped inside constrained mobile-width layouts', function (): void {
+    $page = visit('/ai_nexus')->resize(420, 900);
+
+    expectNameToTruncate(
+        $page,
+        '[data-testid="agent-card-name"][title="ExpenditureDetailsRelatedNotesAnalyzer"]',
+        'ExpenditureDetailsRelatedNotesAnalyzer',
+    );
+
+    expectNameToTruncate(
+        $page,
+        '[data-testid="agent-card-unavailable-name"][title="IncomeProtectionRecommendationDataCollectorBrokenAgent"]',
+        'IncomeProtectionRecommendationDataCollectorBrokenAgent',
+    );
+
+    // Narrow viewports automatically ride the icon rail (see App.vue), so the
+    // agent list is hidden — and nothing may spill into a page-level
+    // horizontal scrollbar.
+    $page->assertMissing('[data-testid="sidebar-agent-name"]');
+    expect($page->script('document.documentElement.scrollWidth'))->toBeLessThanOrEqual(420);
+
+    $page->assertNoJavaScriptErrors();
+});
+
+it('renders an empty state when no agents are found', function (): void {
+    Configure::write('AiNexus.discovery.paths', [dirname(__DIR__, 2) . '/TestApp/Ai/Tools']);
+
+    visit('/ai_nexus')
+        ->assertSeeIn('@empty-state', 'No agents found')
+        ->assertNoJavaScriptErrors();
+});

@@ -1,0 +1,707 @@
+
+html {
+    min-width: 0;
+}
+
+body {
+    padding-bottom: 0;
+}
+
+.ai-nexus-shell {
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.ai-nexus-main {
+    min-width: 0;
+    background: $main-bg;
+}
+
+.card,
+.chat-thread-inner,
+.chat-thread {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ai-nexus-sidebar {
+    width: 18rem;
+    min-height: 100vh;
+    background: $sidebar-bg;
+    transition: width 200ms;
+}
+
+.ai-nexus-sidebar.is-collapsed {
+    width: 3.5rem;
+}
+
+.ai-nexus-sidebar-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.ai-nexus-sidebar-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.ai-nexus-sidebar.is-collapsed .sidebar-top {
+    justify-content: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.ai-nexus-sidebar.is-collapsed .nav-link {
+    justify-content: center;
+}
+
+.ai-nexus-sidebar.is-collapsed .nav-item svg,
+.ai-nexus-sidebar.is-collapsed .nav-item button.nav-link svg,
+.ai-nexus-sidebar.is-collapsed .nav-item a.nav-link svg {
+    margin-right: 0;
+}
+
+.sidebar .nav-item .ai-nexus-dropdown {
+    display: block;
+    width: 100%;
+}
+
+.ai-nexus-sidebar.is-collapsed .nav-item button.nav-link {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+.sidebar .nav-item button.nav-link {
+    width: 100%;
+    color: $sidebar-nav-color;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 4px;
+    border: none;
+    border-radius: $border-radius-lg;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+
+    svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 15px;
+        fill: $sidebar-nav-icon-color;
+    }
+
+    &:hover {
+        background-color: $sidebar-nav-hover-bg;
+        color: $sidebar-nav-hover-color;
+    }
+}
+
+.workspace-nav .workspace-title {
+    padding-bottom: 0;
+    margin-bottom: 0.25rem;
+}
+
+.workspace-nav .nav-item a,
+.workspace-nav .nav-item button.nav-link {
+    margin-bottom: 2px;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+}
+
+// Info panel tabs: muted bar, card active tab, muted text that brightens
+// on hover — never primary pills.
+.info-tabs {
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    background: $tab-track-bg;
+}
+
+.info-tabs .nav-item {
+    flex: 1 1 0%;
+}
+
+.info-tabs .nav-link {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    text-align: center;
+    color: $text-muted;
+    background: transparent;
+    transition: color 150ms;
+
+    &:hover {
+        color: $body-color;
+        background: transparent;
+    }
+
+    &.active {
+        color: $body-color;
+        background: $card-bg;
+    }
+}
+
+// Chat error card: flat surface, red frame + wash from the same danger
+// color; recoverable errors stay neutral.
+.error-card {
+    border-radius: 0.75rem;
+    box-shadow: none;
+}
+
+.error-card-fatal {
+    border: 1px solid rgba($danger, 0.4);
+    background: rgba($danger, 0.05);
+}
+
+.error-card-muted {
+    border: 1px solid var(--bs-border-color);
+    background: transparent;
+}
+
+// Discovery cards: flat framed surface on the page background. The house
+// `.card` style brings a shadow and no border, so the frame is declared
+// here explicitly; it turns high-contrast on hover/focus.
+.agent-card {
+    border-radius: 0.75rem;
+    background: transparent;
+    border: 1px solid var(--bs-border-color);
+    box-shadow: none;
+}
+
+.agent-card .card-body,
+.agent-card .card-footer {
+    background: transparent;
+}
+
+// Footer divider keeps the solid theme border in both themes (the default
+// cap color dissolves into the page background in dark mode). It never
+// follows the hover frame color.
+.agent-card .card-footer {
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.agent-card-interactive {
+    cursor: pointer;
+    transition: border-color 150ms;
+}
+
+.agent-card-interactive:hover,
+.agent-card-interactive:focus-visible,
+.agent-card-interactive:focus-within {
+    border-color: #{$card-frame-hover};
+}
+
+// Collapsed rail: workspace entries behave like the sidebar toggle
+// (centered icon buttons with no background) and brighten on hover.
+.ai-nexus-sidebar.is-collapsed .workspace-nav {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.ai-nexus-sidebar.is-collapsed .workspace-nav .nav-link {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: 0 auto 4px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: $sidebar-nav-color;
+
+    // The house button rule locks svg fill to gray; follow the link color
+    // instead so the icon brightens together with it. Stroke icons keep
+    // their transparent fill.
+    svg {
+        fill: currentColor;
+
+        &[stroke='currentColor'] {
+            fill: none;
+        }
+    }
+
+    &:hover {
+        background: transparent;
+        color: $sidebar-nav-hover-color;
+    }
+
+    &.active {
+        background: transparent;
+        color: $sidebar-nav-active-color;
+    }
+}
+
+.workspace-nav .nav {
+    gap: 0;
+}
+
+.sidebar-recents {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-recent {
+    position: relative;
+}
+
+.sidebar-recent-row {
+    display: block;
+    border-radius: $border-radius-lg;
+    padding: 0.4rem 0.5rem;
+    color: $sidebar-nav-color;
+    text-decoration: none;
+
+    &:hover {
+        background-color: $sidebar-nav-hover-bg;
+        color: $sidebar-nav-hover-color;
+    }
+}
+
+.sidebar-recent-agent {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $text-muted;
+}
+
+.sidebar-recent-main {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.sidebar-recent-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+}
+
+.sidebar-recent-calls {
+    font-size: 0.65rem;
+    color: $text-muted;
+    white-space: nowrap;
+}
+
+.sidebar-recent:hover .sidebar-recent-calls,
+.sidebar-recent:focus-within .sidebar-recent-calls {
+    opacity: 0;
+}
+
+.sidebar-recent-error {
+    flex-shrink: 0;
+    color: $danger;
+}
+
+.sidebar-recent-menu {
+    position: absolute;
+    top: 0.15rem;
+    right: 0.15rem;
+    opacity: 0;
+
+    &:focus-within {
+        opacity: 1;
+    }
+}
+
+.sidebar-recent:hover .sidebar-recent-menu {
+    opacity: 1;
+}
+
+.table {
+    --bs-table-color: #{$body-color};
+    --bs-table-striped-color: #{$body-color};
+    --bs-table-hover-color: #{$body-color};
+    color: $body-color;
+}
+
+.playground {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+}
+
+.playground-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+}
+
+.playground-thread {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.playground-thread-empty {
+    justify-content: center;
+    align-items: center;
+}
+
+.playground-composer {
+    flex-shrink: 0;
+    z-index: 20;
+    background: $editor-bg;
+    padding: 0.75rem 1rem 1.5rem;
+}
+
+// Chat composer: flat framed card with a borderless auto-growing textarea.
+.composer-card {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--bs-border-color);
+    background: transparent;
+}
+
+.composer-input {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    resize: none;
+    outline: none;
+    overflow-y: auto;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: inherit;
+    max-height: 12rem;
+}
+
+.composer-input:focus {
+    outline: none;
+    border: 0;
+    box-shadow: none;
+}
+
+.composer-input::placeholder {
+    color: $text-muted;
+}
+
+// Send button: red, roomy radius, opacity states.
+.composer-send {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2rem;
+    padding: 0 0.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: rgb(254, 59, 31);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 150ms;
+
+    &:hover {
+        opacity: 0.9;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: default;
+    }
+}
+
+.playground-composer-inner {
+    margin: 0 auto;
+}
+
+.playground-composer-inner .form-control:focus {
+    border-color: var(--bs-border-color);
+    box-shadow: none;
+}
+
+.dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-menu .dropdown-item.active .text-muted,
+.dropdown-menu .dropdown-item:active .text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.dropdown-menu .dropdown-item svg.icon {
+    flex-shrink: 0;
+}
+
+// Hover card listing the hidden tools. Real DOM (not attr() content) so
+// the header stays muted while the names stay bright. Theme variables
+// throughout: Bootstrap's secondary surface stays light in both
+// stylesheets, so it cannot be used here.
+.tool-tip {
+    position: relative;
+}
+
+.tool-tip-card {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    z-index: 60;
+    min-width: 10rem;
+    max-width: 16rem;
+    padding: 0.5rem 0.75rem;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: left;
+    color: $body-color;
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.tool-tip:hover .tool-tip-card,
+.tool-tip:focus-visible .tool-tip-card {
+    display: flex;
+}
+
+.tool-tip-title {
+    color: $text-muted;
+}
+
+// Menu trigger hover follows the theme card surface for the same reason.
+.ai-nexus-menu-trigger:hover {
+    background: $card-bg-secondary;
+}
+
+.info-row-value {
+    background: $card-bg-secondary;
+    color: $body-color;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.markdown-body,
+.tool-detail-text {
+    text-align: justify;
+    hyphens: auto;
+}
+.info-middleware {
+    background: $card-bg-secondary;
+    color: $body-color;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+.message-attachment-thumb {
+    display: inline-block;
+    max-width: 12rem;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    border: 1px solid var(--bs-border-color);
+}
+
+.message-attachment-thumb img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.streaming-caret {
+    display: inline-block;
+    width: 0.5rem;
+    height: 1rem;
+    margin-left: 0.25rem;
+    vertical-align: text-bottom;
+    background: currentColor;
+    animation: streaming-blink 1s steps(2, start) infinite;
+}
+
+@keyframes streaming-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.collapsible-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    appearance: none;
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color);
+    cursor: pointer;
+}
+
+.collapsible-trigger:hover {
+    color: var(--bs-body-color);
+}
+
+.collapsible-chevron {
+    display: inline-block;
+    transition: transform 150ms;
+}
+
+.collapsible-chevron-open {
+    transform: rotate(180deg);
+}
+
+.tool-card-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    appearance: none;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+}
+
+.playground-main {
+    background: transparent;
+    color: $body-color;
+}
+
+.message-user-bubble {
+    max-width: 80%;
+    border-radius: 0.75rem;
+    background: $message-user-bg;
+    color: $body-color;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+
+div[data-testid='tool-card'] {
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 0.75rem;
+    box-shadow: none;
+}
+
+code {
+    background: $card-bg-secondary;
+    color: $body-color;
+    border-radius: 0.25rem;
+    padding: 0.1rem 0.3rem;
+    overflow-wrap: break-word;
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+}
+
+.history-filters .form-control-with-icon {
+    position: relative;
+}
+
+.history-filters .form-control-with-icon .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.history-filters .form-control-with-icon .icon-wrapper .icon {
+    fill: $text-muted;
+}
+
+.history-filters .form-control-with-icon .form-control {
+    padding-left: 2.25rem;
+    font-size: 0.875rem;
+    border-radius: 9999px;
+}
+
+.ai-nexus-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.375rem;
+    background: transparent;
+    appearance: none;
+    color: var(--bs-secondary-color);
+    cursor: pointer;
+}
+
+.ai-nexus-icon-btn:hover {
+    background: $card-bg-secondary;
+    color: $body-color;
+}
+
+.stroke-primary {
+    stroke: $primary;
+    fill: none;
+}
+.composer-attach {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 1px solid var(--bs-border-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+    color: var(--bs-secondary-color);
+}
+
+.composer-attach:hover {
+    background: $card-bg-secondary;
+    color: $body-color;
+}
+
+.model-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    background: $card-bg-secondary;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    color: $text-muted;
+    cursor: pointer;
+}
+
+.model-trigger:hover {
+    color: $body-color;
+}
+

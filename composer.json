@@ -1,0 +1,89 @@
+{
+    "name": "crustum/ai-nexus",
+    "description": "AiNexus plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "keywords": [
+        "cakephp",
+        "crustum",
+        "ai-nexus"
+    ],
+    "authors": [
+        {
+            "name": "Evgeny Tomenko",
+            "homepage": "https://github.com/skie"
+        }
+    ],
+    "require": {
+        "php": ">=8.4",
+        "cakephp/cakephp": "^5.4",
+        "crustum/cakephp-ai": "^2.0"
+    },
+    "require-dev": {
+        "cakedc/cakephp-phpstan": "^4.3",
+        "cakephp/cakephp-codesniffer": "^5.3",
+        "crustum/plugin-manifest": "^1.2",
+        "jasonmccreary/double": "^1.0",
+        "pestphp/pest": "^4.7",
+        "pestphp/pest-plugin-type-coverage": "^4.0",
+        "pestphp/pest-plugin-browser": "^4.0",
+        "phpstan/phpstan": "^2.3",
+        "phpunit/phpunit": "^12.5|^13.0",
+        "rector/rector": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Crustum\\AiNexus\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Crustum\\AiNexus\\Test\\": "tests/",
+            "TestApp\\": "tests/TestApp/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@rector-check",
+            "@test",
+            "@analyse"
+        ],
+        "fix": [
+            "@cs-fix",
+            "@rector-fix",
+            "@cs-fix",
+            "@analyse"
+        ],
+        "analyse": [
+            "@stan"
+        ],
+        "cs-check": "phpcs -p --standard=phpcs.xml src/ tests/",
+        "cs-fix": "phpcbf --standard=phpcs.xml src/ tests/",
+        "test": "pest --compact --testsuite=Unit,Feature,Integration",
+        "test:e2e": "pest --compact --testsuite=e2e",
+        "test:unit": "pest --compact --testsuite=Unit",
+        "test:feature": "pest --compact --testsuite=Feature",
+        "test:integration": "pest --compact --testsuite=Integration",
+        "rector-check": "vendor/bin/rector process --dry-run",
+        "rector-fix": "vendor/bin/rector process",
+        "stan": "phpstan analyse src/",
+        "stan-baseline": "phpstan analyse --generate-baseline"
+    },
+    "extra": {
+        "installer-name": "AiNexus"
+    },
+    "suggest": {
+        "crustum/plugin-manifest": "CakePHP plugin installer"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "cakephp/plugin-installer": true,
+            "php-http/discovery": false,
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
